@@ -5,10 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -85,18 +85,24 @@
   users.users.mic = {
     isNormalUser = true;
     description = "mic";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
-  
+
   # Experimental stuff
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # # Increase download buffer size
   # nix.download-buffer-size
@@ -106,7 +112,7 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  
+
   programs.git.enable = true;
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;
@@ -122,7 +128,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-   wget
+    wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

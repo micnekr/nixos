@@ -13,39 +13,59 @@
 
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: 
-  let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-    # pkgs = import nixpkgs {
-    #   inherit system;
-    #   config = {
-    #     # allowUnfree = true;
-    #   };
-    # };
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      ...
+    }@inputs:
+    let
+      system = "x86_64-linux";
+      # pkgs = nixpkgs.legacyPackages.${system};
+      # pkgs = import nixpkgs {
+      #   inherit system;
+      #   config = {
+      #     # allowUnfree = true;
+      #   };
+      # };
+      mkSystem =
+        host: system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        nixpkgs.lib.nixosSystem {
+          modules = [
+            ./hosts/vm/configuration.nix
+          ];
+          # specialArgs passes these arguments into the modules, namely configuration.nix
+          specialArgs = { inherit inputs; };
+        };
 
-  in
-  {
-    nixosConfigurations = {
-    vm=nixpkgs.lib.nixosSystem {
-      modules = [
-        ./hosts/vm/configuration.nix
-        # you can move this into folders for organisation someday
-      ];
-      # specialArgs passes these arguments into the modules, namely configuration.nix
-      specialArgs = {inherit inputs;};
-    };
+      mkHomeManager =
+        host: system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
 
-    homeConfigurations.mic = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      modules = [
-        ./home.nix
-      ];
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./hosts/${host}/home.nix
+          ];
 
-      # extraSpecialArgs passes these arguments into the modules, namely home.nix
-      extraSpecialArgs = {
+          # extraSpecialArgs passes these arguments into the modules, namely home.nix
+          extraSpecialArgs = {
+          };
+        };
+
+    in
+    {
+      nixosConfigurations = {
+        vm = mkSystem "vm" "x86_64-linux";
+      };
+      homeConfigurations = {
+	"mic@vm" = mkHomeManager "vm" "x86_64-linux";
       };
     };
-    };
-  };
 }
