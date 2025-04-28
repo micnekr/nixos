@@ -11,6 +11,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nvim = {
+      url = "path:./modules/nvim/";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -56,6 +60,8 @@
 
           # extraSpecialArgs passes these arguments into the modules, namely home.nix
           extraSpecialArgs = {
+	    inherit system;
+	    localflakes = inputs;
           };
         };
 

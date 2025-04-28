@@ -114,9 +114,6 @@
   nixpkgs.config.allowUnfree = true;
 
   programs.git.enable = true;
-  programs.neovim.enable = true;
-  programs.neovim.defaultEditor = true;
-  programs.neovim.vimAlias = true;
 
   programs.nh = {
     enable = true;
@@ -130,6 +127,12 @@
   environment.systemPackages = with pkgs; [
     wget
   ];
+  environment.variables = {
+    EDITOR = "nvim";
+  };
+  environment.shellAliases = {
+      "vim" = "nvim";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
