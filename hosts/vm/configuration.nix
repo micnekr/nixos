@@ -104,14 +104,15 @@
     "flakes"
   ];
 
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
   # # Increase download buffer size
   # nix.download-buffer-size
 
   # Install firefox.
   programs.firefox.enable = true;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   programs.git.enable = true;
 
