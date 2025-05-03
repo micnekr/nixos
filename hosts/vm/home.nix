@@ -1,10 +1,12 @@
 { config, pkgs, system, localflakes, ... }:
 
+let homeDirectory = "/home/mic";
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "mic";
-  home.homeDirectory = "/home/mic";
+  home.homeDirectory = homeDirectory;
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -74,7 +76,31 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  programs.kitty.enable = true;
+  programs.kitty = {
+    enable = true;
+    keybindings = {
+      "alt+w" = "new_tab_with_cwd";
+      "alt+x" = "close_tab";
+      "alt+r" = "set_tab_title";
+      "alt+shift+w" = "new_window";
+      "alt+shift+x" = "close_window";
+      "alt+down" = "next_window";
+      "alt+up" = "previous_window";
+      # let the user pick window by number
+      "alt+backspace" = "focus_visible_window";
+    } // 
+      # Switch to tab with alt+number
+      builtins.listToAttrs (builtins.map (num: {
+	name = "alt+${toString num}";
+	value = "goto_tab ${toString num}";
+      } 
+    ) (pkgs.lib.range 1 10) );
+    settings = {
+      "enabled_layouts" = "tall";
+      "startup_session" = "${homeDirectory}/.config/nixos/config/kitty_startup_session.conf";
+    };
+  };
+
 
   programs.fish.enable = true;
 
@@ -82,5 +108,43 @@
   	enable = true;
 	userName = "micnekr";
 	userEmail = "44928743+micnekr@users.noreply.github.com";
+  };
+
+  services.mpdris2.enable = true;
+  services.mpd = {
+    enable = true;
+    dbFile = "${homeDirectory}/Music/.mpd/database";
+    musicDirectory = "${homeDirectory}/Music/library/";
+    playlistDirectory = "${homeDirectory}/Music/.mpd/playlists";
+    network = {
+      listenAddress = "localhost";
+      port = 6600;
+    };
+    extraConfig = ''
+      # Logs to system journal
+      log_file           "syslog"
+      #pid_file           "~/.local/share/mpd/pid"
+      state_file         "~/.local/share/mpd/state"
+      sticker_file       "~/Music/.mpd/sticker.sql"
+
+      auto_update "yes"
+
+      restore_paused "yes"
+      audio_output {
+	      type            "pulse"
+	      name            "pulse audio"
+      }
+
+      audio_output {
+	      type            "fifo"
+	      name            "ncmpcpp visualizer"
+	      path            "/tmp/mpd.fifo"
+	      format          "44100:16:1"
+      }
+    '';
+  };
+  programs.ncmpcpp = {
+    enable = true;
+    mpdMusicDir = "${homeDirectory}/Music/library/";
   };
 }

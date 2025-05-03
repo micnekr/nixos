@@ -102,6 +102,8 @@
           nixd
           stylua
 
+          wl-clipboard
+
 	  # LSPs used for programming and not just configuration stuff
 	  rust-analyzer
 	  python313Packages.isort
