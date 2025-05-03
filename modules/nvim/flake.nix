@@ -129,11 +129,13 @@
           telescope-ui-select-nvim
           nvim-web-devicons
           plenary-nvim
+          diffview-nvim
           nvim-lspconfig
           lazydev-nvim
           fidget-nvim
           conform-nvim
           nvim-cmp
+	  friendly-snippets
           luasnip
           cmp_luasnip
           cmp-nvim-lsp
@@ -153,7 +155,7 @@
 	  neogit
 	  leap-nvim
 	  oil-nvim
-	  nvim-treesitter-context
+	  # nvim-treesitter-context
         ];
         kickstart-debug = [
           nvim-dap

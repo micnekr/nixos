@@ -77,4 +77,10 @@
   programs.kitty.enable = true;
 
   programs.fish.enable = true;
+
+  programs.git = {
+  	enable = true;
+	userName = "micnekr";
+	userEmail = "44928743+micnekr@users.noreply.github.com";
+  };
 }
