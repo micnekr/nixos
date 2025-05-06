@@ -116,6 +116,12 @@ if vim.fn.filereadable(spell_file_path) then
 	})
 end
 
+-- Open config
+function cd_and_find_files()
+	vim.cmd("cd ~/.config/nixos/")
+	vim.cmd("Telescope find_files")
+end
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 

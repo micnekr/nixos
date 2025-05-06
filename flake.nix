@@ -15,6 +15,7 @@
       url = "path:./modules/nvim/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # TODO: maybe add https://github.com/wamserma/flake-programs-sqlite
   };
 
   outputs =

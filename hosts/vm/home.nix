@@ -37,6 +37,13 @@ in
     #   echo "Hello, ${config.home.username}!"
     # '')
     localflakes.nvim.packages.${system}.nvim
+
+    # TODO: configure these
+    pkgs.fzf
+    pkgs.fishPlugins.fzf-fish
+
+    pkgs.trash-cli
+    pkgs.btop
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -71,6 +78,35 @@ in
   #  /etc/profiles/per-user/mic/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
+    EDITOR = "nvim";
+    MANPAGER = "nvim +Man!";
+  };
+  home.shellAliases = {
+    "vim" = "nvim";
+    "p" = "nix-shell -p";
+    "switch-os" = "nh os switch";
+    "switch-home" = "nh home switch";
+    "vimconf" = "vim '+lua cd_and_find_files()'";
+
+    "rm" = "trash -v";
+    "mkdir" = "mkdir -p";
+    "cls" = "clear";
+    "cd-" = "cd -";
+    "ps" = "ps auxf";
+    "ls" = "ls -aFh --color=always"; # add colours and type of entry
+    "ll" = "ls -l | less -F"; # Long listing format
+    "lr" = "ls -R | less -F"; # recursive
+    "cd" = "cd_and_ls"; # Each cd is followed by ls
+
+    "diskspace" = "du -h --max-depth=1 | sort -h -r | less";
+    "df" = "df -hT";
+
+    "icat" = "kitten icat";
+    "kssh" = "kitten ssh";
+  };
+
+  programs.fastfetch = {
+    enable = true;
   };
 
   # Let Home Manager install and manage itself.
@@ -94,7 +130,7 @@ in
 	name = "alt+${toString num}";
 	value = "goto_tab ${toString num}";
       } 
-    ) (pkgs.lib.range 1 10) );
+    ) (pkgs.lib.range 1 9) );
     settings = {
       "enabled_layouts" = "tall";
       "startup_session" = "${homeDirectory}/.config/nixos/config/kitty_startup_session.conf";
@@ -102,7 +138,12 @@ in
   };
 
 
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit=''
+      source ~/.config/nixos/config/config.fish
+    '';
+  };
 
   programs.git = {
   	enable = true;
@@ -110,7 +151,11 @@ in
 	userEmail = "44928743+micnekr@users.noreply.github.com";
   };
 
-  services.mpdris2.enable = true;
+  services.mpdris2 = {
+    enable = true;
+    multimediaKeys = true;
+    notifications = true;
+  };
   services.mpd = {
     enable = true;
     dbFile = "${homeDirectory}/Music/.mpd/database";
@@ -147,4 +192,6 @@ in
     enable = true;
     mpdMusicDir = "${homeDirectory}/Music/library/";
   };
+
+  programs.command-not-found.enable = false;
 }
