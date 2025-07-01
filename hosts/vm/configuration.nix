@@ -57,7 +57,7 @@
   };
 
   # Configure console keymap
-  console.keyMap = "uk";
+  console.keyMap = "us";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -91,6 +91,28 @@
     ];
   };
 
+  services.tlp = {
+        enable = true;
+        settings = {
+          CPU_SCALING_GOVERNOR_ON_AC = "performance";
+          CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+          CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+
+          CPU_MIN_PERF_ON_AC = 0;
+          CPU_MAX_PERF_ON_AC = 100;
+          CPU_MIN_PERF_ON_BAT = 0;
+          CPU_MAX_PERF_ON_BAT = 50;
+
+         #Optional helps save long term battery health
+         START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
+         STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
+
+        };
+  };
+  services.power-profiles-daemon.enable = false;
+
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
 
@@ -100,7 +122,6 @@
     "flakes"
   ];
 
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -109,6 +130,15 @@
 
   # Install firefox.
   programs.firefox.enable = true;
+
+  # https://journix.dev/posts/gaming-on-nixos/
+  programs.steam = {
+    enable = true;
+    # remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    # dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    # localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  };
+  programs.gamemode.enable = true;
 
   programs.git.enable = true;
 

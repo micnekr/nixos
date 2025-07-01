@@ -27,18 +27,14 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      # pkgs = nixpkgs.legacyPackages.${system};
-      # pkgs = import nixpkgs {
-      #   inherit system;
-      #   config = {
-      #     # allowUnfree = true;
-      #   };
-      # };
+      pkgs = import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+        };
+      };
       mkSystem =
         host: system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
         nixpkgs.lib.nixosSystem {
           modules = [
             ./hosts/vm/configuration.nix
@@ -49,10 +45,6 @@
 
       mkHomeManager =
         host: system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [

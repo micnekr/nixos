@@ -42,8 +42,26 @@ in
     pkgs.fzf
     pkgs.fishPlugins.fzf-fish
 
+    pkgs.zip
+    pkgs.unzip
     pkgs.trash-cli
+    pkgs.gawk
+    pkgs.restic
+    pkgs.yt-dlp
+    pkgs.ripgrep
+
     pkgs.btop
+
+    pkgs.prismlauncher
+    pkgs.obs-studio
+    pkgs.discord
+    pkgs.signal-desktop
+    pkgs.zotero
+
+    pkgs.mangohud
+    pkgs.gimp
+    pkgs.libreoffice
+
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -144,12 +162,15 @@ in
       source ~/.config/nixos/config/config.fish
     '';
   };
+  programs.command-not-found.enable = false;
 
   programs.git = {
   	enable = true;
 	userName = "micnekr";
 	userEmail = "44928743+micnekr@users.noreply.github.com";
   };
+
+  programs.mpv.enable = true;
 
   services.mpdris2 = {
     enable = true;
@@ -193,5 +214,10 @@ in
     mpdMusicDir = "${homeDirectory}/Music/library/";
   };
 
-  programs.command-not-found.enable = false;
+  programs.thunderbird = {
+    enable = true;
+    profiles.mic = {
+      isDefault = true;
+    };
+  };
 }
