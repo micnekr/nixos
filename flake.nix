@@ -37,7 +37,8 @@
         host: system:
         nixpkgs.lib.nixosSystem {
           modules = [
-            ./hosts/vm/configuration.nix
+            ./hosts/configuration.nix # overall config
+            ./hosts/${host}/configuration.nix # host-specific config
           ];
           # specialArgs passes these arguments into the modules, namely configuration.nix
           specialArgs = { inherit inputs; };
@@ -48,7 +49,8 @@
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            ./hosts/${host}/home.nix
+            ./hosts/home.nix # overall config
+            ./hosts/${host}/home.nix # host-specific config
           ];
 
           # extraSpecialArgs passes these arguments into the modules, namely home.nix
