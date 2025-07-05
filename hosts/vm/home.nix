@@ -114,6 +114,52 @@ in
 
   programs.fastfetch = {
     enable = true;
+    settings =  
+      {
+	modules = [
+	  {
+	    type = "title";
+	    color = {
+	       user = "green";
+	       at = "green";
+	       host = "green";
+	    };
+	  }
+	  "separator"
+	  "os"
+	  "host"
+	  "kernel"
+	  "uptime"
+	  "packages"
+	  "shell"
+	  "editor"
+	  "display"
+	  # "de"
+	  "wm"
+	  # "wmtheme"
+	  # "theme"
+	  # "icons"
+	  "font"
+	  # "cursor"
+	  # "terminal"
+	  # "terminalfont"
+	  "cpu"
+	  "gpu"
+	  "memory"
+	  "swap"
+	  "disk"
+	  "localip"
+	  "battery"
+	  "break"
+	];
+	# General settings
+	"display" = {
+	  "color" = {
+	    "keys" = "blue";
+	    "title" = "red";
+	  };
+	};
+      };
   };
 
   # Let Home Manager install and manage itself.
@@ -125,7 +171,7 @@ in
       name = "JetBrainsMono Nerd Font";
       size = 10;
     };
-    themeFile = "Catppuccin-Macchiato";
+    themeFile = "Catppuccin-Mocha";
     keybindings = {
       "alt+w" = "new_tab_with_cwd";
       "alt+x" = "close_tab";
@@ -146,6 +192,7 @@ in
     settings = {
       "enabled_layouts" = "tall";
       "startup_session" = "${homeDirectory}/.config/nixos/config/kitty_startup_session.conf";
+      "tab_bar_style" = "slant";
     };
   };
 
