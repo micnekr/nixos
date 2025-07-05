@@ -20,16 +20,6 @@ in
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
     # # environment:
@@ -114,7 +104,6 @@ in
     "ls" = "ls -aFh --color=always"; # add colours and type of entry
     "ll" = "ls -l | less -F"; # Long listing format
     "lr" = "ls -R | less -F"; # recursive
-    "cd" = "cd_and_ls"; # Each cd is followed by ls
 
     "diskspace" = "du -h --max-depth=1 | sort -h -r | less";
     "df" = "df -hT";
@@ -132,6 +121,11 @@ in
 
   programs.kitty = {
     enable = true;
+    font = {
+      name = "JetBrainsMono Nerd Font";
+      size = 10;
+    };
+    themeFile = "Catppuccin-Macchiato";
     keybindings = {
       "alt+w" = "new_tab_with_cwd";
       "alt+x" = "close_tab";
@@ -163,6 +157,24 @@ in
     '';
   };
   programs.command-not-found.enable = false;
+
+  programs.starship = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = {
+      add_newline = true;
+      command_timeout = 1300;
+      scan_timeout = 50;
+      format = "$all$git_branch$git_commit$git_state$git_status\n$username$hostname$directory";
+      git_status = {
+	format = "$ahead_behind$conflicted";
+      };
+      character = {
+	success_symbol = "[](bold green) ";
+	error_symbol = "[✗](bold red) ";
+      };
+    };
+  };
 
   programs.git = {
   	enable = true;
