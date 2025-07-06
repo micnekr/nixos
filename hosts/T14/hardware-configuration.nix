@@ -22,19 +22,19 @@
   };
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/d790d659-91aa-422e-8de1-60c467b74c65";
+    { device = "/dev/disk/by-uuid/c88bd374-3371-423a-bcdd-f77fef9fc41e";
       fsType = "btrfs";
       options = [ "subvol=root" "compress=zstd" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/d790d659-91aa-422e-8de1-60c467b74c65";
+    { device = "/dev/disk/by-uuid/c88bd374-3371-423a-bcdd-f77fef9fc41e";
       fsType = "btrfs";
       options = [ "subvol=home" "compress=zstd" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/d790d659-91aa-422e-8de1-60c467b74c65";
+    { device = "/dev/disk/by-uuid/c88bd374-3371-423a-bcdd-f77fef9fc41e";
       fsType = "btrfs";
       options = [ "subvol=nix" "compress=zstd" "noatime" ];
     };

@@ -75,3 +75,8 @@ function cd --description 'Change directory. Modified script to run ls at the en
 
     return $cd_status
 end
+
+# If ssh-agent isn't running, create one
+if not pgrep ssh-agent > /dev/null
+    eval $(ssh-agent -c) > /dev/null
+end

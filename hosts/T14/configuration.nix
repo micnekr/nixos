@@ -4,6 +4,8 @@
 
 { config, pkgs, ... }:
 
+let homeDirectory = "/home/mic";
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -45,6 +47,8 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      # For kanata
+      "uinput" "input"
     ];
   };
 
@@ -95,4 +99,19 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  services.kanata = {
+    enable = true;
+    # /dev/input/by-path/platform-i8042-serio-0-event-kbd
+    keyboards = {
+      base = {
+        extraDefCfg = ''
+          danger-enable-cmd yes
+          process-unmapped-keys yes
+        '';
+        config = (builtins.readFile ../../config/kanata.kbd);
+      };
+    };
+    package = pkgs.kanata-with-cmd;
+  };
 }

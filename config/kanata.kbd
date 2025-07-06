@@ -1,0 +1,60 @@
+(defvar tap-repress-timeout 0)
+
+;; Actual keys
+
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl  lmet lalt           spc           ralt prnt rctl
+)
+
+#|
+(deflayer test
+ _   _    _    _    _    _    _    _    _    _    _    _    _    _
+ _   _    _    _    _    _    _    _    _    _    _    _    _    _
+ _   _    _    _    _    _    _    _    _    _    _    _    _
+ _   _    _    _    _    _    _    _    _    _    _    _
+_    _    _         _                   _    _    _
+)
+|#
+
+(deflayer colemak
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    f    p    b    j    l    u    y    ;    [    ]    \
+  @etc a    r    s    t    g    m    n    e    i    o    '    ret
+  lshft  x    c    d    v    z    k    h    ,    .    /    rshft
+  lctl  lalt lmet           spc           @raltmpd _ @rctlp
+)
+
+(deflayer qwerty
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @etc a    s    d    f    g    h    j    k    l    ;    '    ret
+  lshft z    x    c    v    b    n    m    ,    .    /    rshft
+  lctl  lmet lalt           spc           @raltmpd _ @rctlp
+)
+
+(deflayer etc
+  _   _    _    _    _    _    _    _    _    _    _    _    _    _
+  _   _    1    2    3    _   _  `  \    -    =   @qwe  @col _
+  XX  _    4    5    6    _  left down up  right bspc  esc    _
+  _   _    7    8    9    0    _   _    _    _    _    _
+  _    _    _         _                   _    _    @rctlmpd
+)
+
+(defalias
+  mpd (cmd "playerctl play-pause --player=mpd") ;; toggles mpd playback
+  etc  (tap-hold-press $tap-repress-timeout 500 esc (layer-toggle etc)) ;; Bind etc to a button acts as escape when tapped, and switches to a layer when held
+  rctlp  (tap-hold-press $tap-repress-timeout 500 pp rctrl) ;; Bind rctrlp to a button acts as pause-play when tapped, and rctl when held
+  rctlmpd  (tap-hold-press $tap-repress-timeout 500 @mpd rctrl) ;; Bind rctrlmpd to a button acts as mpd pause-play when tapped, and rctl when held
+  raltmpd  (tap-hold-press $tap-repress-timeout 500 @mpd ralt) ;; Bind raltmpd to a button acts as mpd pause-play when tapped, and ralt when held
+)
+
+(defalias
+  ;; NOTE, this is safe because both `qwerty` and `colemak` have the button to go to etc layer
+  ;; Which has buttons for both modes
+  col (layer-switch colemak) ;; Set colemak as the base layer
+  qwe (layer-switch qwerty) ;; Set qwerty as the base layer
+)

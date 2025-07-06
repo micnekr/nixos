@@ -279,4 +279,6 @@ in
       isDefault = true;
     };
   };
+
+  services.playerctld.enable = true;
 }
