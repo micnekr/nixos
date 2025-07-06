@@ -1,10 +1,4 @@
-{
-  description = "NixOS config flake";
-
-  inputs = {
-
-    # Faster than doing it without git protocol because of some bug
-    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
+{ description = "NixOS config flake"; inputs = { # Faster than doing it without git protocol because of some bug nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -64,9 +58,11 @@
     {
       nixosConfigurations = {
         vm = mkSystem "vm" "x86_64-linux";
+        thinkpad = mkSystem "T14" "86_64-linux";
       };
       homeConfigurations = {
 	"mic@vm" = mkHomeManager "vm" "x86_64-linux";
+	"mic@thinkpad" = mkHomeManager "T14" "x86_64-linux";
       };
     };
 }
