@@ -14,6 +14,8 @@ in
 
   networking.hostName = "thinkpad"; # Define your hostname.
 
+  # Allow wireguard connections through firewall
+  networking.firewall.checkReversePath = "loose";
   # Set your time zone.
   time.timeZone = "Europe/London";
 
@@ -36,6 +38,13 @@ in
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  # Auto-detection of printers
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+  services.printing.logLevel = "debug";
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -67,7 +76,7 @@ in
           CPU_MAX_PERF_ON_BAT = 50;
 
          #Optional helps save long term battery health
-         START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
+         START_CHARGE_THRESH_BAT0 = 60; # 40 and below it starts to charge
          STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
 
         };
@@ -113,5 +122,41 @@ in
       };
     };
     package = pkgs.kanata-with-cmd;
+  };
+
+  # Suspend
+  # https://github.com/NixOS/nixpkgs/issues/409934
+  environment.systemPackages = [ 
+    # pkgs.pmutils 
+    pkgs.wireguard-tools 
+    pkgs.networkmanager];
+  # systemd.services."systemd-suspend" = {
+  #   description = "System Suspend with pm-suspend";
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     Environment = "PATH=${pkgs.pmutils}/bin";
+  #     ExecStart = [
+  #       ""
+  #       "${pkgs.pmutils}/bin/pm-suspend"
+  #     ];
+  #   };
+  # };
+
+  services.mullvad-vpn = {
+    enable = true;
+    package = pkgs.mullvad-vpn;
+  };
+  networking.nameservers = [
+    "9.9.9.9"
+  ];
+
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    domains = [ "~." ];
+    fallbackDns = [
+      "9.9.9.9"
+    ];
+    dnsovertls = "true";
   };
 }

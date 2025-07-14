@@ -52,6 +52,9 @@ in
     pkgs.gimp
     pkgs.libreoffice
 
+    pkgs.gnome-clocks
+
+    pkgs.nix-index
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -176,7 +179,7 @@ in
       "alt+w" = "new_tab_with_cwd";
       "alt+x" = "close_tab";
       "alt+r" = "set_tab_title";
-      "alt+shift+w" = "new_window";
+      "alt+shift+w" = "new_window_with_cwd";
       "alt+shift+x" = "close_window";
       "alt+down" = "next_window";
       "alt+up" = "previous_window";
