@@ -19,6 +19,12 @@ in
   # Set your time zone.
   time.timeZone = "Europe/London";
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # TODO: change this back by removing the line in order to improve battery life.
+  # Can only do this once the issue with deep sleep is fixed
+  # boot.kernelParams = [ "mem_sleep_default=deep" ];
+  boot.kernelParams = [ "mem_sleep_default=s2idle" ];
+
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
@@ -76,7 +82,7 @@ in
           CPU_MAX_PERF_ON_BAT = 50;
 
          #Optional helps save long term battery health
-         START_CHARGE_THRESH_BAT0 = 60; # 40 and below it starts to charge
+         START_CHARGE_THRESH_BAT0 = 70; # 40 and below it starts to charge
          STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
 
         };
@@ -129,7 +135,8 @@ in
   environment.systemPackages = [ 
     # pkgs.pmutils 
     pkgs.wireguard-tools 
-    pkgs.networkmanager];
+    pkgs.networkmanager
+  ];
   # systemd.services."systemd-suspend" = {
   #   description = "System Suspend with pm-suspend";
   #   serviceConfig = {
@@ -141,6 +148,8 @@ in
   #     ];
   #   };
   # };
+  
+  services.fwupd.enable = true;
 
   services.mullvad-vpn = {
     enable = true;
