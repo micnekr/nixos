@@ -58,12 +58,12 @@
     {
       nixosConfigurations = {
         vm = mkSystem "vm" "x86_64-linux";
-        thinkpad = mkSystem "T14" "86_64-linux";
+        laptop = mkSystem "laptop" "86_64-linux";
         desktop = mkSystem "desktop" "86_64-linux";
       };
       homeConfigurations = {
 	"mic@vm" = mkHomeManager "vm" "x86_64-linux";
-	"mic@thinkpad" = mkHomeManager "T14" "x86_64-linux";
+	"mic@laptop" = mkHomeManager "laptop" "x86_64-linux";
 	"mic@desktop" = mkHomeManager "desktop" "x86_64-linux";
       };
     };

@@ -12,7 +12,7 @@ in
     ./hardware-configuration.nix
   ];
 
-  networking.hostName = "thinkpad"; # Define your hostname.
+  networking.hostName = "laptop"; # Define your hostname.
 
   # Allow wireguard connections through firewall
   networking.firewall.checkReversePath = "loose";
@@ -20,10 +20,6 @@ in
   time.timeZone = "Europe/London";
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  # TODO: change this back by removing the line in order to improve battery life.
-  # Can only do this once the issue with deep sleep is fixed
-  # boot.kernelParams = [ "mem_sleep_default=deep" ];
-  boot.kernelParams = [ "mem_sleep_default=s2idle" ];
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
@@ -50,7 +46,6 @@ in
     nssmdns4 = true;
     openFirewall = true;
   };
-  services.printing.logLevel = "debug";
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -130,27 +125,11 @@ in
     package = pkgs.kanata-with-cmd;
   };
 
-  # Suspend
-  # https://github.com/NixOS/nixpkgs/issues/409934
   environment.systemPackages = [ 
-    # pkgs.pmutils 
     pkgs.wireguard-tools 
     pkgs.networkmanager
   ];
-  # systemd.services."systemd-suspend" = {
-  #   description = "System Suspend with pm-suspend";
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     Environment = "PATH=${pkgs.pmutils}/bin";
-  #     ExecStart = [
-  #       ""
-  #       "${pkgs.pmutils}/bin/pm-suspend"
-  #     ];
-  #   };
-  # };
   
-  services.fwupd.enable = true;
-
   services.mullvad-vpn = {
     enable = true;
     package = pkgs.mullvad-vpn;
