@@ -54,6 +54,8 @@ in
 
     pkgs.gnome-clocks
 
+    pkgs.thunderbird
+
     pkgs.nix-index
   ];
 
@@ -274,12 +276,8 @@ in
   programs.ncmpcpp = {
     enable = true;
     mpdMusicDir = "${homeDirectory}/Music/library/";
-  };
-
-  programs.thunderbird = {
-    enable = true;
-    profiles.mic = {
-      isDefault = true;
+    settings = {
+      lyrics_fetchers = "tags, tekstowo, plyrics, justsomelyrics, internet, jahlyrics, genius, zeneszoveg";
     };
   };
 
